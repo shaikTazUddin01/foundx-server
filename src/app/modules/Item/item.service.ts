@@ -1,10 +1,11 @@
 import { QueryBuilder } from '../../builder/QueryBuilder';
 import { TImageFiles } from '../../interfaces/image.interface';
-// import {
-//   addDocumentToIndex,
-//   deleteDocumentFromIndex,
-// } from '../../utils/meilisearch';
-import { ItemsSearchableFields } from './item.constant';
+import meiliClient from '../../utils/meilisearch';
+import {
+  addDocumentToIndex,
+  // deleteDocumentFromIndex,
+} from '../../utils/meilisearch';
+import { ItemsSearchableFields, noImage } from './item.constant';
 import { TItem } from './item.interface';
 import { Item } from './item.model';
 import {
@@ -18,7 +19,17 @@ const createItemIntoDB = async (payload: TItem, images: TImageFiles) => {
 
   const result = await Item.create(payload);
 
-  // await addDocumentToIndex(result, 'items');
+  // const { _id, title, description, images: itemThumbnils } = result;
+
+  // await meiliClient.index('item').addDocuments([
+  //   {
+  //     _id: _id.toString(),
+  //     title,
+  //     description,
+  //     images: itemThumbnils![0] || noImage,
+  //   },
+  // ]);
+  await addDocumentToIndex(result, 'items');
   return result;
 };
 
